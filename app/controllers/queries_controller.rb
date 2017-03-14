@@ -15,7 +15,7 @@ class QueriesController < ApplicationController
 
 
   def find_restaurants(query)
-    query = (query.split.each {|w| w.capitalize!}).join(' ')
+    query = (query.split.each {|w| w.capitalize!}).join(' ').gsub(",","")
     agent = Mechanize.new
     first_page = agent.get("https://www.tripadvisor.com/Restaurants")
     first_page.forms[0]["q"] = query
