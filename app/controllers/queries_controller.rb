@@ -1,7 +1,7 @@
 require 'mechanize'
 
 class QueriesController < ApplicationController
-  
+  skip_before_action :verify_authenticity_token
 
   def create
     if User.where(phone_number: params[:from])
@@ -10,7 +10,7 @@ class QueriesController < ApplicationController
       @user = User.create(phone_number: params[:phone_number])
     end
     @query = Query.create(user: @user, query: params[:body].strip.lstrip)
-    find_restaurants(@query)
+    find_restaurants(@query.query)
   end
 
 
