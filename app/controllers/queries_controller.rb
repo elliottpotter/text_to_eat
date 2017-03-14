@@ -33,7 +33,7 @@ class QueriesController < ApplicationController
     @client.messages.create(
       from: '+12052895050',
       to:   @user.phone_number,
-      body: " 1. #{restaurants[0]} \n 2. #{restaurants[1]} \n 3. #{restaurants[2]} \n 4. #{restaurants[3]} \n 5. #{restaurants[4]}"
+      body: "1. #{restaurants[0]} \n2. #{restaurants[1]} \n3. #{restaurants[2]} \n4. #{restaurants[3]} \n5. #{restaurants[4]}"
     )
   end
 
