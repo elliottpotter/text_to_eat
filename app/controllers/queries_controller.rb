@@ -4,10 +4,10 @@ class QueriesController < ApplicationController
   skip_before_action :verify_authenticity_token
 
   def create
-    if User.where(phone_number: params[:from])
-      @user = User.where(phone_number: params[:from_number])
+    if User.where(phone_number: params[:from]).first
+      @user = User.where(phone_number: params[:from]).first
     else
-      @user = User.create(phone_number: params[:phone_number])
+      @user = User.create(phone_number: params[:from])
     end
     @query = Query.create(user: @user, query: params[:body].strip.lstrip)
     find_restaurants(@query.query)
@@ -17,12 +17,12 @@ class QueriesController < ApplicationController
   def find_restaurants(query)
     query = (query.split.each {|w| w.capitalize!}).join(' ')
     agent = Mechanize.new
-    first_page = agent.get("https://www.tripadvisor.com/Restaurants.com")
+    first_page = agent.get("https://www.tripadvisor.com/Restaurants")
     first_page.forms[0]["q"] = query
     second_page = first_page.forms[0].submit
     restaurants = []
-    city = query.split.first.lower.capitalize
-    restaurant_page = second_page.link_with(href: /(Restaurants).*(city)/).click
+    city = query.split.first.downcase.capitalize
+    restaurant_page = second_page.link_with(href: /(Restaurants).*(#{city})/).click
     restaurant_page.search(".property_title").first(5).each { |res| restaurants << res.text.gsub(/\n/, '') }
     send_results(restaurants)
   end
@@ -33,7 +33,7 @@ class QueriesController < ApplicationController
     @client.messages.create(
       from: '+12052895050',
       to:   @user.phone_number,
-      body: restaurants.each_with_index { |restaurant, i| puts "#{i + 1}. #{restaurant}" }
+      body: " 1. #{restaurants[0]} \n 2. #{restaurants[1]} \n 3. #{restaurants[2]} \n 4. #{restaurants[3]} \n 5. #{restaurants[4]}"
     )
   end
 
