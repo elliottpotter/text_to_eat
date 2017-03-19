@@ -4,12 +4,13 @@ class QueriesController < ApplicationController
   skip_before_action :verify_authenticity_token
 
   def create
-    if User.where(phone_number: params[:from]).first
-      @user = User.where(phone_number: params[:from]).first
+    if User.where(phone_number: params["From"]).first
+      @user = User.where(phone_number: params["From"]).first
     else
-      @user = User.create(phone_number: params[:from])
+      @user = User.create(phone_number: params["From"])
     end
-    @query = Query.create(user: @user, query: params[:body].strip.lstrip)
+    @query = Query.create(user: @user, query: params["Body"].strip.lstrip)
+    puts params
     find_restaurants(@query.query)
   end
 
