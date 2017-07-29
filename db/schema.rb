@@ -10,10 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170314182422) do
+ActiveRecord::Schema.define(version: 20170729193710) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "allflicks_cookies", force: :cascade do |t|
+    t.string   "phpsessid"
+    t.string   "identifier"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "queries", force: :cascade do |t|
     t.string   "query"
