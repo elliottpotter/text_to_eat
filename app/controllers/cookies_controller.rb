@@ -13,6 +13,7 @@ class CookiesController < ApplicationController
 
   def cookie_params
     cookies = {}
+    params[:cookies]    = JSON.parse(params[:body][:cookies])
     params[:cookies].map { |cookie| cookies[cookie[:name]] = cookie[:value] if cookie[:name] == "PHPSESSID" || cookie[:name] == "identifier" }
     params[:phpsessid]  = cookies["PHPSESSID"]
     params[:identifier] = cookies["identifier"]
