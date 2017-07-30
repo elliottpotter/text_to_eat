@@ -1,0 +1,2 @@
+class AllflicksCookie < ApplicationRecord
+end
